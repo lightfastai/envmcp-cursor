@@ -274,13 +274,20 @@ jobs:
       with:
         version: "latest"
 
-    - name: Set up Python
+    - name: Set up Python 3.10
       uses: actions/setup-python@v5
       with:
-        python-version: ${{ env.PYTHON_VERSION }}
+        python-version: "3.10"
 
-    - name: Install uv Python
-      run: uv python install ${{ env.PYTHON_VERSION }}
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.13"
+
+    - name: Install uv Python versions
+      run: |
+        uv python install 3.10
+        uv python install 3.13
 
     # Platform-specific cache
     - name: Cache UV dependencies
