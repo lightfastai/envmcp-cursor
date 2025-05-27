@@ -94,6 +94,25 @@ def cli_test(session):
 
 
 @nox.session(python=DEFAULT_PYTHON)
+def security(session):
+    """Run security checks."""
+    session.install("uv")
+    session.run("uv", "pip", "install", "-e", ".")
+    session.run("uv", "pip", "install", "safety", "bandit[toml]")
+
+    # Run safety check on dependencies
+    session.run(
+        "sh", "-c", "uv pip freeze | safety check --short-report", external=True
+    )
+
+    # Run bandit security scan on source code
+    try:
+        session.run("bandit", "-r", "envmcp/", "-f", "txt")
+    except Exception:
+        session.log("Bandit found security issues - review the output above")
+
+
+@nox.session(python=DEFAULT_PYTHON)
 def dev(session):
     """Set up development environment."""
     session.install("uv")
@@ -108,6 +127,8 @@ def dev(session):
         "pytest-cov",
         "coverage",
         "build",
+        "safety",
+        "bandit[toml]",
     )
     session.log("Development environment ready!")
     session.log("Available commands:")
@@ -116,3 +137,4 @@ def dev(session):
     session.log("  nox -s tests     # Run tests")
     session.log("  nox -s coverage  # Run tests with coverage")
     session.log("  nox -s type_check # Run type checking")
+    session.log("  nox -s security  # Run security checks")
