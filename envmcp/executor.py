@@ -20,7 +20,7 @@ def execute_command(command: str, args: Optional[List[str]] = None) -> None:
         args = []
 
     # Combine command and args for subprocess
-    cmd_list = [command] + args
+    cmd_list = [command, *args]
 
     try:
         # Execute the command with current environment
@@ -34,7 +34,7 @@ def execute_command(command: str, args: Optional[List[str]] = None) -> None:
 
         if needs_shell:
             # For shell commands, join everything into a single string
-            cmd_str = " ".join([command] + args)
+            cmd_str = " ".join([command, *args])
             process = subprocess.run(cmd_str, shell=True, env=os.environ.copy())
         else:
             # For regular commands, use the safer approach

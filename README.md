@@ -172,8 +172,8 @@ Contributions are welcome: please feel free to open issues or PRs!
 
 ### Prerequisites
 
-- Python 3.8 or later
-- pip
+- Python 3.8 or later (3.13.3 recommended)
+- [uv](https://docs.astral.sh/uv/) (recommended) or pip
 
 ### Setup
 
@@ -182,36 +182,61 @@ Contributions are welcome: please feel free to open issues or PRs!
 git clone https://github.com/lightfastai/envmcp-cursor.git
 cd envmcp-cursor
 
-# Install in development mode
-pip install -e .
+# Install development dependencies (with uv - recommended)
+uv sync --group dev
+
+# Or with pip
+pip install -e .[dev]
+```
+
+### Development Commands
+
+This project uses [nox](https://nox.thea.codes/) for task automation:
+
+```bash
+# Set up development environment
+nox -s dev
+
+# Run linting and formatting
+nox -s lint
+nox -s format
+
+# Run tests on all supported Python versions
+nox -s tests
+
+# Run tests on specific Python version
+nox -s tests --python 3.13
+
+# Run type checking
+nox -s type_check
+
+# Run tests with coverage
+nox -s coverage
+
+# Test CLI functionality
+nox -s cli_test
+
+# Build package
+nox -s build
+```
+
+### Manual Commands
+
+If you prefer to run tools directly:
+
+```bash
+# Format code
+ruff format .
+ruff check --fix .
 
 # Run tests
-python -m unittest discover tests/
-```
+pytest tests/
 
-### Running Tests
+# Type checking
+mypy envmcp
 
-```bash
-# Run all tests
-python -m unittest discover tests/
-
-# Run specific test file
-python -m unittest tests.test_core
-
-# Run with coverage
-pip install coverage
-coverage run -m unittest discover tests/
-coverage report
-```
-
-### Publishing
-
-```bash
-# Build the package
+# Build package
 python -m build
-
-# Upload to PyPI
-python -m twine upload dist/*
 ```
 
 ## License

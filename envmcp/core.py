@@ -71,12 +71,12 @@ def parse_env_file(file_path: str) -> Dict[str, str]:
         PermissionError: If the file can't be read.
     """
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             content = f.read()
-    except FileNotFoundError:
-        raise FileNotFoundError(f"Environment file not found: {file_path}")
-    except PermissionError:
-        raise PermissionError(f"Permission denied reading file: {file_path}")
+    except FileNotFoundError as err:
+        raise FileNotFoundError(f"Environment file not found: {file_path}") from err
+    except PermissionError as err:
+        raise PermissionError(f"Permission denied reading file: {file_path}") from err
 
     result: Dict[str, str] = {}
 

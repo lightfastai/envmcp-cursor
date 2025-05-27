@@ -6,8 +6,9 @@ Thank you for your interest in contributing to envmcp! This guide will help you 
 
 ### Prerequisites
 
-- Python 3.8 or later
+- Python 3.8 or later (3.13.3 recommended)
 - Git
+- [uv](https://docs.astral.sh/uv/) (recommended) or pip
 
 ### Setup
 
@@ -17,64 +18,108 @@ Thank you for your interest in contributing to envmcp! This guide will help you 
    cd envmcp-cursor
    ```
 
-2. **Create a virtual environment**:
+2. **Install development dependencies**:
+   
+   **With uv (recommended)**:
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   uv sync --group dev
    ```
-
-3. **Install in development mode**:
+   
+   **Or with pip**:
    ```bash
-   pip install -e .
-   pip install -r requirements-dev.txt
+   pip install -e .[dev]
    ```
 
 ## Development Workflow
 
 ### Code Quality
 
-We use several tools to maintain code quality:
+We use modern Python tooling to maintain code quality:
 
-- **Black**: Code formatting
-- **isort**: Import sorting
-- **flake8**: Linting
+- **ruff**: Fast linting and code formatting (replaces black, flake8, isort)
 - **mypy**: Type checking
+- **nox**: Task automation and testing across Python versions
 
-Run all checks:
+### Using Nox (Recommended)
+
+This project uses [nox](https://nox.thea.codes/) for task automation:
+
+```bash
+# Set up development environment
+nox -s dev
+
+# Run linting and formatting
+nox -s lint
+nox -s format
+
+# Run tests on all supported Python versions
+nox -s tests
+
+# Run tests on specific Python version
+nox -s tests --python 3.13
+
+# Run type checking
+nox -s type_check
+
+# Run tests with coverage
+nox -s coverage
+
+# Test CLI functionality
+nox -s cli_test
+
+# Build package
+nox -s build
+```
+
+### Manual Commands
+
+If you prefer to run tools directly:
+
 ```bash
 # Format code
-black .
-isort .
+ruff format .
+ruff check --fix .
 
-# Check linting
-flake8 envmcp tests
+# Check linting (without fixing)
+ruff check .
+ruff format --check .
 
 # Type checking
-mypy envmcp --ignore-missing-imports
+mypy envmcp
+
+# Run tests
+pytest tests/
+
+# Run tests with coverage
+pytest tests/ --cov=envmcp --cov-report=term-missing
 ```
 
 ### Testing
 
 Run the test suite:
 ```bash
-# Run all tests
-python -m unittest discover tests/ -v
+# Using nox (recommended)
+nox -s tests
 
-# Run with coverage
-coverage run -m unittest discover tests/
-coverage report
+# Or manually
+pytest tests/ -v
+
+# With coverage
+nox -s coverage
 ```
 
-### Manual Testing
+### Manual CLI Testing
 
 Test the CLI functionality:
 ```bash
-# Test help
-envmcp --help
+# Using nox
+nox -s cli_test
 
-# Test with a sample env file
+# Or manually
+envmcp --help
 echo "TEST_VAR=hello" > test.env
 envmcp --env-file test.env python -c "import os; print(os.environ.get('TEST_VAR'))"
+rm test.env
 ```
 
 ## Making Changes
@@ -95,14 +140,16 @@ git checkout -b feature/your-feature-name
 ### 3. Test Your Changes
 
 ```bash
-# Run tests
-python -m unittest discover tests/ -v
+# Run all checks with nox (recommended)
+nox -s lint
+nox -s tests
+nox -s type_check
 
-# Run linting
-black --check .
-isort --check-only .
-flake8 envmcp tests
-mypy envmcp --ignore-missing-imports
+# Or run manually
+ruff check .
+ruff format --check .
+pytest tests/ -v
+mypy envmcp
 ```
 
 ### 4. Commit and Push
@@ -110,7 +157,7 @@ mypy envmcp --ignore-missing-imports
 ```bash
 git add .
 git commit -m "Add your descriptive commit message"
-git push origin feature/your-feature-name
+git push origin username/your-feature-name
 ```
 
 ### 5. Create a Pull Request
@@ -121,19 +168,21 @@ git push origin feature/your-feature-name
 
 ## Code Style Guidelines
 
-- Follow PEP 8 (enforced by flake8)
+- Follow PEP 8 (enforced by ruff)
 - Use type hints for all functions
 - Write docstrings for public functions
-- Keep line length to 88 characters (Black default)
+- Keep line length to 88 characters (ruff default)
 - Use descriptive variable and function names
+- Code is automatically formatted with ruff (replaces black, isort, flake8)
 
 ## Testing Guidelines
 
-- Write tests for all new functionality
+- Write tests for all new functionality using pytest
 - Aim for high test coverage
 - Use descriptive test names
 - Test both success and failure cases
 - Mock external dependencies
+- Run tests across all supported Python versions with `nox -s tests`
 
 ## Documentation
 
@@ -151,6 +200,19 @@ When reporting issues, please include:
 - Steps to reproduce
 - Expected vs actual behavior
 - Error messages (if any)
+- Output of `envmcp --version`
+
+## Development Tools
+
+This project uses modern Python development tools:
+
+- **nox**: Task automation and testing across Python versions
+- **ruff**: Fast linting and formatting (replaces black, flake8, isort)
+- **mypy**: Static type checking
+- **pytest**: Testing framework
+- **uv**: Fast Python package installer (optional but recommended)
+
+All tools are configured in `pyproject.toml` and `ruff.toml`.
 
 ## Questions?
 
