@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "envmcp"
+version = "0.1.0"
+description = "A lightweight way to use environment variables in your Cursor MCP server definitions."
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Jeevan Pillay", email = "jp@jeevanpillay.com"}
+]
+maintainers = [
+    {name = "Jeevan Pillay", email = "jp@jeevanpillay.com"}
+]
+keywords = ["cursor", "mcp", "mcp-server", "env", "environment", "dotenv"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Systems Administration",
+]
+requires-python = ">=3.8"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/lightfastai/envmcp-cursor"
+Repository = "https://github.com/lightfastai/envmcp-cursor"
+Issues = "https://github.com/lightfastai/envmcp-cursor/issues"
+
+[project.scripts]
+envmcp = "envmcp.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["envmcp*"]
+
+[tool.setuptools.package-data]
+envmcp = ["py.typed"] 
