@@ -3,9 +3,9 @@ Tests for envmcp.cli module.
 """
 
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
-from envmcp.cli import parse_args, main
+from envmcp.cli import main, parse_args
 
 
 class TestParseArgs(unittest.TestCase):

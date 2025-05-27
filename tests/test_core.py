@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from envmcp.core import find_env_file, parse_env_file, load_env_mcp
+from envmcp.core import find_env_file, load_env_mcp, parse_env_file
 
 
 class TestFindEnvFile(unittest.TestCase):

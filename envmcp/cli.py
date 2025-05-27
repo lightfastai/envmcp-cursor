@@ -23,7 +23,8 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
     """
     parser = argparse.ArgumentParser(
         prog="envmcp",
-        description="A lightweight way to use environment variables in your Cursor MCP server definitions.",
+        description="A lightweight way to use environment variables in your "
+        "Cursor MCP server definitions.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:

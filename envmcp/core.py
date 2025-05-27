@@ -13,7 +13,8 @@ def find_env_file(start_dir: Optional[str] = None) -> Optional[str]:
     Finds the closest .env.mcp file by traversing up the directory tree.
 
     Args:
-        start_dir: The directory to start searching from. Defaults to current working directory.
+        start_dir: The directory to start searching from. Defaults to current
+            working directory.
 
     Returns:
         The path to the found .env.mcp file or None if not found.
