@@ -63,7 +63,7 @@ def build(session):
     session.run("python", "-m", "build")
 
 
-@nox.session(python="3.13")
+@nox.session(python=PYTHON_VERSIONS)
 def cli_test(session):
     """Test CLI functionality."""
     session.install("-e", ".")

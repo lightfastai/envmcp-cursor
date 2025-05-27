@@ -190,7 +190,7 @@ jobs:
         nox --session "tests" --python "${{ matrix.python-version }}" -- --numprocesses=auto --maxfail=3
 
     - name: Test CLI functionality
-      run: nox -s cli_test
+      run: nox -s "cli_test-${{ matrix.python-version }}"
 
   # Integration and coverage testing
   integration-tests:
@@ -240,7 +240,7 @@ jobs:
     - name: Run integration tests
       run: |
         # Run CLI tests with optimizations
-        nox -s cli_test
+        nox -s "cli_test-${{ env.PYTHON_VERSION }}"
 
     - name: Coverage report (conditional)
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -311,7 +311,7 @@ jobs:
         nox --session "tests" --python "3.13" -- --numprocesses=auto
 
     - name: Test CLI on ${{ matrix.os }}
-      run: nox -s cli_test
+      run: nox -s "cli_test-${{ env.PYTHON_VERSION }}"
 
   # Package building and verification
   build-and-verify:
