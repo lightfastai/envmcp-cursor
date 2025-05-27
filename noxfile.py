@@ -14,8 +14,9 @@ def tests(session):
     """Run the test suite."""
     session.install("uv")
     session.run("uv", "pip", "install", "-e", ".")
-    session.run("uv", "pip", "install", "pytest", "pytest-cov")
-    session.run("pytest", "tests/", "-v")
+    session.run("uv", "pip", "install", "pytest", "pytest-cov", "pytest-xdist")
+    # Pass through any additional arguments to pytest
+    session.run("pytest", "tests/", "-v", *session.posargs)
 
 
 @nox.session(python=DEFAULT_PYTHON)
@@ -125,6 +126,7 @@ def dev(session):
         "mypy",
         "pytest",
         "pytest-cov",
+        "pytest-xdist",
         "coverage",
         "build",
         "safety",

@@ -184,3 +184,6 @@ Thumbs.db
 # Logs
 logs
 *.log 
+
+# Ruff stuff:
+.ruff_cache/
