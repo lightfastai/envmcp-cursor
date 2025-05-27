@@ -172,7 +172,7 @@ Contributions are welcome: please feel free to open issues or PRs!
 
 ### Prerequisites
 
-- Python 3.8 or later (3.13 recommended)
+- Python 3.10 or later (3.13 recommended)
 - [uv](https://docs.astral.sh/uv/) (recommended) or pip
 - [nox](https://nox.thea.codes/) for task automation
 
@@ -240,7 +240,7 @@ nox --list
 - **Default sessions** (run with `nox`):
   - `lint`: Run ruff linting and formatting checks
   - `type_check`: Run mypy type checking
-  - `tests`: Run pytest on all supported Python versions (3.8-3.13)
+  - `tests`: Run pytest on all supported Python versions (3.10-3.13)
 
 - **Additional sessions**:
   - `format`: Format code with ruff

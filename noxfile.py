@@ -6,7 +6,7 @@ import nox
 # Default sessions to run when no session is specified
 nox.options.sessions = ["lint", "type_check", "tests"]
 
-PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13"]
 
 
 @nox.session(python="3.13")  # Use latest Python for linting

@@ -141,7 +141,7 @@ jobs:
       fail-fast: false
       matrix:
         # Reduced to key versions for performance
-        python-version: ["3.8", "3.11", "3.13"]
+        python-version: ["3.10", "3.11", "3.13"]
 
     steps:
     - name: Checkout repository
@@ -307,7 +307,7 @@ jobs:
     - name: Run core tests
       run: |
         # Test minimum and latest Python versions on cross-platform
-        nox --session "tests" --python "3.8" -- --numprocesses=auto
+        nox --session "tests" --python "3.10" -- --numprocesses=auto
         nox --session "tests" --python "3.13" -- --numprocesses=auto
 
     - name: Test CLI on ${{ matrix.os }}

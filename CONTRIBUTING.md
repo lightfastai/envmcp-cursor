@@ -6,7 +6,7 @@ Thank you for your interest in contributing to envmcp! This guide will help you 
 
 ### Prerequisites
 
-- Python 3.8 or later (3.13.3 recommended)
+- Python 3.10 or later (3.13.3 recommended)
 - Git
 - [uv](https://docs.astral.sh/uv/) (recommended) or pip
 
