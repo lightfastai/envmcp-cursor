@@ -3,7 +3,7 @@ requires = ["setuptools>=75.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "envmcp"
+name = "lightfast-envmcp-cursor"
 version = "0.1.0"
 description = "A lightweight way to use environment variables in your Cursor MCP server definitions."
 readme = "README.md"
@@ -49,9 +49,9 @@ security = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/lightfastai/envmcp-cursor"
-Repository = "https://github.com/lightfastai/envmcp-cursor"
-Issues = "https://github.com/lightfastai/envmcp-cursor/issues"
+Homepage = "https://github.com/lightfastai/lightfast-envmcp-cursor"
+Repository = "https://github.com/lightfastai/lightfast-envmcp-cursor"
+Issues = "https://github.com/lightfastai/lightfast-envmcp-cursor/issues"
 
 [project.scripts]
 envmcp = "envmcp.cli:main"

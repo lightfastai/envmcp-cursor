@@ -1,14 +1,14 @@
-# envmcp
+# lightfast-envmcp-cursor
 
-[![PyPI version](https://img.shields.io/pypi/v/envmcp.svg)](https://pypi.org/project/envmcp/)
-[![Python versions](https://img.shields.io/pypi/pyversions/envmcp.svg)](https://pypi.org/project/envmcp/)
+[![PyPI version](https://img.shields.io/pypi/v/lightfast-envmcp-cursor.svg)](https://pypi.org/project/lightfast-envmcp-cursor/)
+[![Python versions](https://img.shields.io/pypi/pyversions/lightfast-envmcp-cursor.svg)](https://pypi.org/project/lightfast-envmcp-cursor/)
 
 Use environment variables in your Cursor MCP server definitions.
 
 ## Installation
 
 ```bash
-pip install envmcp
+pip install lightfast-envmcp-cursor
 ```
 
 ## Recommended usage
@@ -172,21 +172,27 @@ Contributions are welcome: please feel free to open issues or PRs!
 
 ### Prerequisites
 
-- Python 3.8 or later (3.13.3 recommended)
+- Python 3.8 or later (3.13 recommended)
 - [uv](https://docs.astral.sh/uv/) (recommended) or pip
+- [nox](https://nox.thea.codes/) for task automation
 
 ### Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/lightfastai/envmcp-cursor.git
-cd envmcp-cursor
+git clone https://github.com/lightfastai/lightfast-envmcp-cursor.git
+cd lightfast-envmcp-cursor
 
 # Install development dependencies (with uv - recommended)
 uv sync --group dev
 
 # Or with pip
 pip install -e .[dev]
+
+# Install nox for task automation
+pip install nox
+# or with uv
+uv tool install nox
 ```
 
 ### Development Commands
@@ -205,7 +211,7 @@ nox -s format
 nox -s tests
 
 # Run tests on specific Python version
-nox -s tests --python 3.13
+nox -s tests-3.13
 
 # Run type checking
 nox -s type_check
@@ -214,10 +220,37 @@ nox -s type_check
 nox -s coverage
 
 # Test CLI functionality
-nox -s cli_test
+nox -s cli_test-3.13
+
+# Run security checks
+nox -s security
 
 # Build package
 nox -s build
+
+# Run all default sessions (lint, type_check, tests)
+nox
+
+# List all available sessions
+nox --list
+```
+
+#### Available Nox Sessions
+
+- **Default sessions** (run with `nox`):
+  - `lint`: Run ruff linting and formatting checks
+  - `type_check`: Run mypy type checking
+  - `tests`: Run pytest on all supported Python versions (3.8-3.13)
+
+- **Additional sessions**:
+  - `format`: Format code with ruff
+  - `coverage`: Run tests with coverage reporting
+  - `security`: Run bandit security scanning
+  - `safety_check`: Run safety dependency scanning
+  - `build`: Build the package (sdist and wheel)
+  - `dev`: Set up development environment
+  - `cli_test-X.Y`: Test CLI functionality on specific Python version
+
 ```
 
 ### Manual Commands
@@ -234,6 +267,10 @@ pytest tests/
 
 # Type checking
 mypy envmcp
+
+# Security scanning
+bandit -r envmcp/
+safety scan
 
 # Build package
 python -m build

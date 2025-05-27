@@ -1,4 +1,4 @@
-"""Nox configuration for envmcp."""
+"""Nox configuration for lightfast-envmcp-cursor."""
 
 import nox
 
