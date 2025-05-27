@@ -3,55 +3,50 @@
 import nox
 
 
-# Python versions to test against
+# Default sessions to run when no session is specified
+nox.options.sessions = ["lint", "type_check", "tests"]
+
 PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
-# Use False to use the current Python interpreter (more reliable in CI)
-DEFAULT_PYTHON = False
+
+
+@nox.session(python="3.13")  # Use latest Python for linting
+def lint(session):
+    """Run linting with ruff."""
+    session.install("ruff")
+    session.run("ruff", "check", ".")
+    session.run("ruff", "format", "--check", ".")
+
+
+@nox.session(python="3.13")  # Use latest Python for type checking
+def type_check(session):
+    """Run type checking with mypy."""
+    session.install("mypy")
+    session.install("-e", ".")
+    session.run("mypy", "envmcp")
 
 
 @nox.session(python=PYTHON_VERSIONS)
 def tests(session):
     """Run the test suite."""
-    session.install("uv")
-    session.run("uv", "pip", "install", "-e", ".")
-    session.run("uv", "pip", "install", "pytest", "pytest-cov", "pytest-xdist")
+    session.install("-e", ".")
+    session.install("pytest", "pytest-cov", "pytest-xdist")
     # Pass through any additional arguments to pytest
     session.run("pytest", "tests/", "-v", *session.posargs)
 
 
-@nox.session(python=DEFAULT_PYTHON)
-def lint(session):
-    """Run linting with ruff."""
-    session.install("uv")
-    session.run("uv", "pip", "install", "ruff")
-    session.run("ruff", "check", ".")
-    session.run("ruff", "format", "--check", ".")
-
-
-@nox.session(python=DEFAULT_PYTHON)
+@nox.session(python="3.13")
 def format(session):
     """Format code with ruff."""
-    session.install("uv")
-    session.run("uv", "pip", "install", "ruff")
+    session.install("ruff")
     session.run("ruff", "format", ".")
     session.run("ruff", "check", "--fix", ".")
 
 
-@nox.session(python=DEFAULT_PYTHON)
-def type_check(session):
-    """Run type checking with mypy."""
-    session.install("uv")
-    session.run("uv", "pip", "install", "-e", ".")
-    session.run("uv", "pip", "install", "mypy")
-    session.run("mypy", "envmcp")
-
-
-@nox.session(python=DEFAULT_PYTHON)
+@nox.session(python="3.13")
 def coverage(session):
     """Run tests with coverage reporting."""
-    session.install("uv")
-    session.run("uv", "pip", "install", "-e", ".")
-    session.run("uv", "pip", "install", "pytest", "pytest-cov", "coverage")
+    session.install("-e", ".")
+    session.install("pytest", "pytest-cov", "coverage")
     session.run(
         "pytest",
         "tests/",
@@ -61,19 +56,17 @@ def coverage(session):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON)
+@nox.session(python="3.13")
 def build(session):
     """Build the package."""
-    session.install("uv")
-    session.run("uv", "pip", "install", "build")
+    session.install("build")
     session.run("python", "-m", "build")
 
 
-@nox.session(python=DEFAULT_PYTHON)
+@nox.session(python="3.13")
 def cli_test(session):
     """Test CLI functionality."""
-    session.install("uv")
-    session.run("uv", "pip", "install", "-e", ".")
+    session.install("-e", ".")
 
     # Test help command
     session.run("envmcp", "--help")
@@ -82,7 +75,7 @@ def cli_test(session):
     session.run("envmcp", "--version")
 
     # Test with a simple command
-    session.run("sh", "-c", "echo 'TEST_VAR=hello' > test.env")
+    session.run("sh", "-c", "echo 'TEST_VAR=hello' > test.env", external=True)
     session.run(
         "envmcp",
         "--env-file",
@@ -91,37 +84,41 @@ def cli_test(session):
         "-c",
         "import os; print('TEST_VAR:', os.environ.get('TEST_VAR', 'NOT_FOUND'))",
     )
-    session.run("rm", "-f", "test.env")
+    session.run("rm", "-f", "test.env", external=True)
 
 
-@nox.session(python=DEFAULT_PYTHON)
+@nox.session(python="3.13")
 def security(session):
     """Run security checks."""
-    session.install("uv")
-    session.run("uv", "pip", "install", "-e", ".")
-    session.run("uv", "pip", "install", "safety", "bandit[toml]")
-
-    # Run safety check on dependencies
-    session.run(
-        "sh", "-c", "uv pip freeze | safety check --short-report", external=True
-    )
+    session.install("-e", ".")
+    session.install("bandit[toml]")
 
     # Run bandit security scan on source code
-    try:
-        session.run("bandit", "-r", "envmcp/", "-f", "txt")
-    except Exception:
-        session.log("Bandit found security issues - review the output above")
+    session.run(
+        "bandit",
+        "-r",
+        "envmcp/",
+        "-f",
+        "txt",
+        success_codes=[0, 1],
+    )
 
 
-@nox.session(python=DEFAULT_PYTHON)
+@nox.session(python="3.13")
+def safety_check(session):
+    """Run safety check on dependencies (separate session due to potential hanging)."""
+    session.install("-e", ".")
+    session.install("safety")
+
+    # Run safety check on dependencies
+    session.run("safety", "scan", "--output", "text", success_codes=[0, 1])
+
+
+@nox.session(python="3.13")
 def dev(session):
     """Set up development environment."""
-    session.install("uv")
-    session.run("uv", "pip", "install", "-e", ".")
-    session.run(
-        "uv",
-        "pip",
-        "install",
+    session.install("-e", ".")
+    session.install(
         "ruff",
         "mypy",
         "pytest",

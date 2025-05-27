@@ -187,7 +187,7 @@ jobs:
     - name: Run tests with parallel execution
       run: |
         # Use parallel execution for faster test runs
-        nox --session "tests-${{ matrix.python-version }}" -- --numprocesses=auto --maxfail=3
+        nox --session "tests" --python "${{ matrix.python-version }}" -- --numprocesses=auto --maxfail=3
 
     - name: Test CLI functionality
       run: nox -s cli_test
@@ -307,8 +307,8 @@ jobs:
     - name: Run core tests
       run: |
         # Test minimum and latest Python versions on cross-platform
-        nox --session "tests-3.8" -- --numprocesses=auto
-        nox --session "tests-3.13" -- --numprocesses=auto
+        nox --session "tests" --python "3.8" -- --numprocesses=auto
+        nox --session "tests" --python "3.13" -- --numprocesses=auto
 
     - name: Test CLI on ${{ matrix.os }}
       run: nox -s cli_test
