@@ -5,8 +5,8 @@ import nox
 
 # Python versions to test against
 PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
-# Default Python version for development
-DEFAULT_PYTHON = "3.13"
+# Use False to use the current Python interpreter (more reliable in CI)
+DEFAULT_PYTHON = False
 
 
 @nox.session(python=PYTHON_VERSIONS)

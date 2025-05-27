@@ -60,7 +60,12 @@ jobs:
       with:
         version: "latest"
 
-    - name: Set up Python
+    - name: Set up Python with actions/setup-python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install uv Python
       run: uv python install ${{ env.PYTHON_VERSION }}
 
     # Enhanced UV cache with better key strategy
@@ -148,6 +153,11 @@ jobs:
         version: "latest"
 
     - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install uv Python ${{ matrix.python-version }}
       run: uv python install ${{ matrix.python-version }}
 
     # Reuse cache from fast-checks job
@@ -197,6 +207,11 @@ jobs:
         version: "latest"
 
     - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install uv Python
       run: uv python install ${{ env.PYTHON_VERSION }}
 
     # Reuse dependencies cache
@@ -260,6 +275,11 @@ jobs:
         version: "latest"
 
     - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install uv Python
       run: uv python install ${{ env.PYTHON_VERSION }}
 
     # Platform-specific cache
@@ -308,6 +328,11 @@ jobs:
         version: "latest"
 
     - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install uv Python
       run: uv python install ${{ env.PYTHON_VERSION }}
 
     # Cache build tools
